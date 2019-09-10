@@ -7,6 +7,10 @@
 
 %define _prefix	@prefix@
 
+%if %{defined fedora}
+%global debug_package %{nil}
+%endif
+
 Summary:	LinuxSampler control protocol API
 Name:		%{name}
 Version:	%{version}
@@ -32,7 +36,7 @@ LinuxSampler control protocol API.
 
 %package -n %{_soname}
 Summary:	LinuxSampler control protocol API library
-Group:		Productivity/Multimedia/Sound
+Group:		System/Libraries
 Provides:	%{name}
 
 %description -n %{_soname}
@@ -54,12 +58,14 @@ LinuxSampler control protocol API libraries and include files.
 [ -x ./autogen.sh ] && ./autogen.sh
 
 %build
+%if %{undefined fedora}
+export CFLAGS="-ffat-lto-objects"
+%endif
 %configure
 %__make %{?_smp_mflags}
 
 %install
 %__make DESTDIR="%{buildroot}" install
-find %{buildroot} -name "lib*.*a" -ls -delete
 
 %clean
 [ -d "%{buildroot}" -a "%{buildroot}" != "/" ] && %__rm -rf "%{buildroot}"
@@ -79,8 +85,8 @@ find %{buildroot} -name "lib*.*a" -ls -delete
 %defattr(-,root,root)
 %doc doc/html/*
 %{_libdir}/liblscp.so
-#{_libdir}/liblscp.a
-#{_libdir}/liblscp.la
+%{_libdir}/liblscp.a
+%{_libdir}/liblscp.la
 %{_libdir}/pkgconfig/lscp.pc
 %dir %{_includedir}/lscp
 %{_includedir}/lscp/*.h
