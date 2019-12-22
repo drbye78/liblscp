@@ -24,7 +24,11 @@
 
 #include <ctype.h>
 #include <sys/time.h>
-#include <sys/errno.h>
+#ifdef WIN32
+# include <errno.h>
+#else
+# include <sys/errno.h>
+#endif
 
 
 // Split chunk size magic:

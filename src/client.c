@@ -23,7 +23,12 @@
 #include <locale.h>
 #include "common.h"
 #include <sys/time.h>
-#include <sys/errno.h>
+#ifdef WIN32
+# include <errno.h>
+#else
+# include <sys/errno.h>
+#endif
+
 
 // Default timeout value (in milliseconds).
 #define LSCP_TIMEOUT_MSECS  500
