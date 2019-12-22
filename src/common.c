@@ -23,6 +23,7 @@
 #include "common.h"
 
 #include <ctype.h>
+#include <sys/time.h>
 
 
 // Split chunk size magic:

@@ -22,6 +22,7 @@
 
 #include <locale.h>
 #include "common.h"
+#include <sys/time.h>
 
 // Default timeout value (in milliseconds).
 #define LSCP_TIMEOUT_MSECS  500
