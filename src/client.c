@@ -54,8 +54,8 @@ static lscp_status_t _lscp_client_evt_request (lscp_client_t *pClient,
 // General helper functions.
 
 struct _locale_t {
-	char numeric[32];
-	char ctype[32];
+	char numeric[32+1];
+	char ctype[32+1];
 };
 
 // we need to ensure a constant locale setting e.g. for parsing
@@ -63,6 +63,7 @@ struct _locale_t {
 // character varies by the invidual locale settings
 static void _save_and_set_c_locale(struct _locale_t* locale)
 {
+	locale->numeric[32] = locale->ctype[32] = 0;
 	strncpy(locale->numeric, setlocale(LC_NUMERIC, NULL), 32);
 	strncpy(locale->ctype, setlocale(LC_CTYPE, NULL), 32);
 	setlocale(LC_NUMERIC, "C");

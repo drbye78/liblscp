@@ -14,6 +14,8 @@ unreleased         [ SVN trunk / git master ]
                      lscp_client_connection_lost();
                    for checking whether client lost connection to server.
 
+                   Fixed potential missing NULL termination of locale strings.
+
 0.6.0  2017-12-12  An Autumn'17 release.
 
 0.5.8  2016-11-14  A Fall'16 release.
