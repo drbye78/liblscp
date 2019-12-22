@@ -7,6 +7,13 @@ unreleased         [ SVN trunk / git master ]
 
                    Fixed compile errors on macOS.
 
+                   Expose actual system error codes via client interface
+                   instead of just -1 whenever a syscall failed.
+
+                   Added new client interface function:
+                     lscp_client_connection_lost();
+                   for checking whether client lost connection to server.
+
 0.6.0  2017-12-12  An Autumn'17 release.
 
 0.5.8  2016-11-14  A Fall'16 release.

@@ -23,6 +23,7 @@
 #include <locale.h>
 #include "common.h"
 #include <sys/time.h>
+#include <sys/errno.h>
 
 // Default timeout value (in milliseconds).
 #define LSCP_TIMEOUT_MSECS  500
@@ -157,11 +158,13 @@ static void _lscp_client_evt_proc ( void *pvClient )
 			} else {
 				lscp_socket_perror("_lscp_client_evt_proc: recv");
 				pClient->evt.iState = 0;
+				pClient->iErrno = -errno;
 			}
 		}   // Check if select has in error.
 		else if (iSelect < 0) {
 			lscp_socket_perror("_lscp_client_evt_proc: select");
 			pClient->evt.iState = 0;
+			pClient->iErrno = -errno;
 		}
 
 		// Finally, always signal the event.
@@ -637,6 +640,20 @@ int lscp_client_get_timeout ( lscp_client_t *pClient )
 		return -1;
 
 	return pClient->iTimeout;
+}
+
+/**
+ *  Check whether connection to server is lost.
+ *
+ *  @param pClient  Pointer to client instance structure.
+ *
+ *  @returns @c true if client lost connection to server, @c false otherwise.
+ */
+bool lscp_client_connection_lost ( lscp_client_t *pClient )
+{
+    int err = lscp_client_get_errno(pClient);
+    if (err >= 0) return false;
+    return err == -EPIPE || err == -ECONNRESET || err == -ECONNABORTED;
 }
 
 
